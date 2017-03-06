@@ -7,7 +7,7 @@
  */
 ?>
 <div class="row">
-    <div class="col-xs-9">
+    <div class="panel">
         <?= \frontend\widgets\post\PostIndex::widget([
         ]) ?>
     </div>
