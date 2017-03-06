@@ -15,14 +15,14 @@ use yii\bootstrap\Modal;
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h2 class="modal-title" id="myModalLabel">快速融入无名的大家庭：</h2>
+                    <h2 class="modal-title" id="myModalLabel">快速融入我们：</h2>
                 </div>
                 <div class="modal-body container-fluid">
                     <div class="row">
                         <!-- register begin-->
                         <div class="col-xs-6">
                             <div class="pd20">
-                                <h3 class="text-success">十秒快速建立自己的帐号：</h3>
+                                <h3 class="text-success">快速注册：</h3>
                                 <hr>
                                 <?php $form = ActiveForm::begin([
                                     'action' => Yii::$app->urlManager->createUrl('site/signup'),
@@ -35,7 +35,7 @@ use yii\bootstrap\Modal;
                                 <?= $form->field(new SignupForm(), 'username')->label("用户名") ?>
                                 <?= $form->field(new SignupForm(), 'email')->label("邮箱") ?>
                                 <?= $form->field(new SignupForm(), 'password')->passwordInput()->label("密码") ?>
-                                <? //= $form->field(new SignupForm(), 'rePassword')->passwordInput()->label("重复密码") ?>
+                                <?= $form->field(new SignupForm(), 'rePassword')->passwordInput()->label("重复密码") ?>
                                 <div class="form-group">
                                     <div class="col-sm-offset-4 col-sm-8">
                                         <?= Html::submitButton('<span class="glyphicon glyphicon-check"></span> 注册账号', ['class' => 'btn btn-block btn-success ', 'name' => 'signup-button']) ?>
@@ -48,7 +48,7 @@ use yii\bootstrap\Modal;
 
                         <div class="col-xs-6">
                             <div class="pd20">
-                                <h3 class="text-primary">已经有帐号了？快速登录：</h3>
+                                <h3 class="text-primary">快速登录：</h3>
                                 <hr>
                                 <?php $form = ActiveForm::begin([
                                     'action' => Yii::$app->urlManager->createUrl('site/login'),
@@ -61,7 +61,7 @@ use yii\bootstrap\Modal;
                                 <?= $form->field(new \frontend\models\LoginForm(), 'username')->label("用户名") ?>
                                 <?= $form->field(new \frontend\models\LoginForm(), 'password')->passwordInput()->label("密码") ?>
                                 <?= $form->field(new \frontend\models\LoginForm(), 'rememberMe')->checkbox() ?>
-                                <div style="color:#999;margin:1em 0">
+                                <div style="color:#999;margin:2em 0" align="center">
                                     忘记密码了？点击 <?= Html::a('重置密码', ['site/request-password-reset']) ?>.
                                 </div>
                                 <div class="form-group">
