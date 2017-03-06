@@ -6,7 +6,7 @@ use frontend\widgets\post\PostWidget;
 ?>
 
 <div class="row">
-    <div class="panel">
+    <div class="col-lg-9">
         <?= PostWidget::widget([
             'cid' => $cid,
         ])?>
