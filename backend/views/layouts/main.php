@@ -41,6 +41,7 @@ AppAsset::register($this);
     $menuItems1[] = ['label' => '黑名单', 'url' => ['/blacklist']];
     $menuItems1[] = ['label' => '单页管理', 'url' => ['/page']];
     $menuItems1[] = ['label' => '分类管理', 'url' => ['/category']];
+    $menuItems1[] = ['label' => '分类组管理', 'url' => ['/category-group']];
     $menuItems1[] = ['label' => '用户管理', 'url' => ['/user']];
     $menuItems1[] = ['label' => '字段设置', 'url' => ['/setting']];
 

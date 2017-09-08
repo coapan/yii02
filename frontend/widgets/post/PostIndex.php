@@ -37,5 +37,6 @@ class PostIndex extends Widget
         }
 
         return $this->render('index', ['data' => $result]);
+        //return $this->render('test', ['data' => $result]);
     }
 }

@@ -11,7 +11,7 @@ jQuery(document).ready(function ($) {
     /*关注文章*/
     $(".collect").click(function () {
         var press = $(this);
-        var id = press.children('i').html();
+        var id = press.children('i').html();//?
         $.ajax({
             url: collect_url,// 跳转到 action
             data: {

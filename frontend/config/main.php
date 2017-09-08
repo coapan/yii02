@@ -42,10 +42,10 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'suffix' => '.html',
+            //'suffix' => '.html',
             'rules' => [
-                '<controller:\w+>/<id:\d+>' => '<controller>/view', // 'abcde/12345' => 'abcde/detail?id=12345
-                '<controller:\w+>/cid/<cid:\d+>' => '<controller>/',
+                '<controller:\w+>/<id:\d+>.html' => '<controller>/view', // 'abcde/12345' => 'abcde/view?id=12345
+                '<controller:\w+>/<cid:\d+>' => '<controller>/index',
             ],
         ],
 

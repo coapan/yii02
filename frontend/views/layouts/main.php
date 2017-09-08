@@ -41,7 +41,7 @@ AppAsset::register($this);
 
     <?php
     NavBar::begin([
-        'brandLabel' => '我的论坛',
+        'brandLabel' => 'PhpZhi',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -70,24 +70,32 @@ AppAsset::register($this);
             </li>
 
         <?php endforeach ?>
-        <li><a href="<?= Yii::$app->urlManager->createUrl(['list/index']) ?>">更多>></a></li>
+        <!-- <li><a href="<?= Yii::$app->urlManager->createUrl(['list/index']) ?>">更多>></a></li> -->
 
         <div class="navbar-nav navbar-right">
             <?php
-            $form = \yii\widgets\ActiveForm::begin([
+/*            $form = \yii\widgets\ActiveForm::begin([
                 'method' => 'get',
-                'action' => ['search/index'],
+                'action' => ['search/index', 'q'=>''],
                 'options' => [
                     'class' => 'navbar-form navbar-right',
                     'role' => "search"
                 ]
-            ]); ?>
+            ]); */?><!--
             <input type="text" class="form-control" id="navbar-search-input"
-                   value="<?= isset($this->params['keyword']) ? $this->params['keyword'] : '' ?>" placeholder="输入关键字搜索"
+                   value="<?/*= isset($this->params['keyword']) ? $this->params['keyword'] : '' */?>" placeholder="输入关键字搜索"
                    name="keyword"/>
             <!--<span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="fa fa-search"></span></button></span>-->
 
-            <?php \yii\widgets\ActiveForm::end(); ?>
+            <?php /*\yii\widgets\ActiveForm::end(); */?>
+
+            <div class="navbar-form navbar-right-form">
+            <form method="get" onsubmit="location.href='<?=Yii::$app->urlManager->createUrl(['search/index','q'=>'']);?>' + encodeURIComponent(this.s.value).replace(/%20/g, '+'); return false;" action="/">
+                <div class="form-group">
+                    <input   type="text" class="form-control" name="s" onblur="if(this.value=='')this.value='搜索文章 按回车提交';" onfocus="if(this.value=='搜索文章 按回车提交')this.value='';" value="搜索文章 按回车提交">
+                </div>
+            </form>
+            </div>
         </div>
     </ul>
 
@@ -103,7 +111,7 @@ AppAsset::register($this);
         ?>
         &nbsp;
         &nbsp;
-        <a class="pull-right" href="" data-toggle="modal" data-target="#myModal" style="margin: 5px;">登录/注册</a>
+        <a class="navbar-right" href="" data-toggle="modal" data-target="#myModal" style="margin: 14px;">登录/注册</a>
         <div class="clearfix"></div>
         <?php
     } else {

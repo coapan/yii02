@@ -109,6 +109,7 @@ class CommentController extends Controller
                 $data['msg'] = "comment success";
                 echo json_encode($data);
             }
+
         }
     }
 

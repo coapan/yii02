@@ -25,7 +25,7 @@ class TagWidget  extends Widget
             ->all();
         //zhi($res);
 
-        $result['title'] = $this->title?:"热门标签";
+        //$result['title'] = $this->title?:"热门标签";
         $result['body'] = $res?:[];
 
         return $this->render('index', [

@@ -60,7 +60,35 @@ class PostController extends Controller
                         'get', 'post'
                     ]
                 ]
-            ]
+            ],
+            'pageCache' => [
+                'class' => 'yii\filters\PageCache',
+                'only' => ['index', 'view', 'index1'],
+                'variations' => [
+                    Yii::$app->request->get('page'),
+                    Yii::$app->request->get('PostSearch'),
+                ],
+                'dependency' => [
+                    'class' => 'yii\caching\DbDependency',
+                    'sql' => 'select count(id) from post',
+                ],
+            ],
+
+            'httpCache'=>[
+                    'class'=>'yii\filters\HttpCache',
+                    'only'=>['view'],
+                    'lastModified'=>function ($action,$params){
+                        $q = new \yii\db\Query();
+                        return $q->from('post')->max('updated_at');
+                    },
+                    'etagSeed'=>function ($action,$params) {
+                        $post = $this->findModel(Yii::$app->request->get('id'));
+                        return serialize([$post->title,$post->content]);
+                    },
+                    
+                    'cacheControlHeader' => 'public,max-age=600',
+                    
+            ],
         ];
     }
 
@@ -131,7 +159,7 @@ class PostController extends Controller
         //$this->layout = "browser";
         $model = Post::findOne($id);
         //zhi($browser['id']);exit;
-        $model->browser +=1;
+        $model->browser += 1;
         $model->update();
 
         $comment = Comment::find()->where(['post_id' => $model['id']])->asArray()->all();
@@ -143,6 +171,12 @@ class PostController extends Controller
             'comment' => $comment,
             'uid' => $model->user_id,
         ]);
+
+        /*return $this->render('view1', [
+            'data' => $data,
+            'comment' => $comment,
+            'uid' => $model->user_id,
+        ]);*/
     }
 
     /**

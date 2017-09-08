@@ -14,7 +14,7 @@ use yii\bootstrap\Alert;
 use yii\widgets\LinkPager;
 
 ?>
-
+<?php //zhi($model);exit;?>
 <?php if (!$model): ?>
     <div class="main pd20">
         <?php
@@ -24,45 +24,70 @@ use yii\widgets\LinkPager;
             ],
         ]);
 
-        echo "没有找到...请尝试其他关键词";
+        echo "没有找到你的关键词...请尝试其他关键词";
 
         Alert::end();
         ?>
     </div>
 <?php else: ?>
-    <div class="main">
-        <div class="search-type">
-            <span style="float: left;font-size: 15px;font-weight: bold;padding: 10px;">一共搜索到<?= $count ?>关于"<?= $q ?>
-                "的搜索结果</span>
-            <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                        aria-expanded="false">
-                    筛选<span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a href="<?= Yii::$app->urlManager->createUrl(['search/index', 'q' => $q]) ?>" data-type="0">时间不限</a>
-                    </li>
-                    <li><a href="<?= Yii::$app->urlManager->createUrl(['search/index', 'q' => $q, 'type' => 1]) ?>"
-                           data-type="1">一天之内</a></li>
-                    <li><a href="<?= Yii::$app->urlManager->createUrl(['search/index', 'q' => $q, 'type' => 2]) ?>"
-                           data-type="2">一周之内</a></li>
-                    <li><a href="<?= Yii::$app->urlManager->createUrl(['search/index', 'q' => $q, 'type' => 3]) ?>"
-                           data-type="3">三个月内</a></li>
-                </ul>
+
+
+    <div class="content-wrap">
+        <div class="content">
+            <header class="archive-header">
+                <h1>有关【<?= $q; ?>】的内容</h1>
+            </header>
+            <?php foreach ($model as $list):
+                //zhi($list);exit;
+                //$cate_id = $list['cate_id'];
+                ?>
+
+                <article class="excerpt">
+                    <header><a class="label label-important"
+                               href="<?= Yii::$app->urlManager->createUrl(['post/index', 'cid' => $list['cate']['id']]) ?>">
+                            <?= $list['cate']['name'] ?>
+                            <i class="label-arrow"></i></a>
+                        <h2>
+                            <a href="<?= \yii\helpers\Url::to(['post/view', 'id' => $list['id']]) ?>"><?= $list['title'] ?></a>
+                        </h2>
+                    </header>
+                    <div class="focus">
+                        <img class="thumb"
+                             src="<?= ($list['label_img'] ? $list['label_img'] : \Yii::$app->params['default_label_img']) ?>"
+                             alt="<?= $list['title'] ?>" style="width: 200px;height: 123px;"
+                        </a></div>
+                    <span class="note"><?= \common\Yii02::cutStr($list['content'], 150) ?>……<a
+                                href="<?= \yii\helpers\Url::to(['post/view', 'id' => $list['id']]) ?>" rel="nofollow"
+                                class="more-link">继续阅读 &raquo;</a></span>
+                    <p class="auth-span">
+                    <span class="muted"><i class="fa fa-user"></i> <a
+                                href="<?= \yii\helpers\Url::to(['member/info', 'id' => $list['user_id']]) ?>"><?= $list['user_name'] ?></a>&nbsp;</span>
+                        <span class="muted"><i class="fa fa-clock-o"></i> <?= date('Y-m-d', $list['created_at']) ?>
+                            &nbsp;</span> <span class="muted"><i
+                                    class="fa fa-eye"></i> <?= \common\Yii02::getBrowser($list['id']) ?>浏览</span> <span
+                                class="muted"><i class="fa fa-comments-o"></i> <a
+                                    target="_blank"
+                                    href="<?= Yii::$app->urlManager->createUrl(['post/view', 'id' => $list['id']]) ?>#comment"><?= \common\Yii02::getComment($list['id']) ?>
+                                评论</a></span><span
+                                class="muted">
+<a href="javascript:;" data-action="ding" data-id="62" id="Addlike" class="action"><i class="fa fa-heart-o"></i><span
+            class="count">0</span>个赞</a></span></p>
+                </article>
+
+            <?php endforeach; ?>
+            <!--        --><?php //if ($this->pages): ?>
+            <div class="page">
+                <?= \yii\widgets\LinkPager::widget([
+                    'pagination' => $pages,
+                    'prevPageLabel' => '上一页',
+                    'nextPageLabel' => '下一页',
+                    'firstPageLabel' => '首页',
+                    'lastPageLabel' => '尾页',
+                    'hideOnSinglePage' => true,
+                    'maxButtonCount' => 10,
+                ]); ?>
             </div>
-        </div>
-        <div role="tabpanel" style="position: relative;">
-            <div class="tab-content pd20">
-                <div role="tabpanel" class="tab-pane active" id="one">
-                    <?php foreach ($model as $value): ?>
-                        <div class="row gbook_list">
-                            <h1>
-                                <a href="<?= Yii::$app->urlManager->createUrl(['post/view', 'id' => $value['id']]) ?>"><?= $value['title']; ?></a>
-                            </h1>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            </div>
+            <!--        --><?php //endif; ?>
         </div>
     </div>
 <?php endif; ?>

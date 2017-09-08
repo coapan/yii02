@@ -7,9 +7,9 @@
  */
 ?>
 <?php if (!empty($data)):?>
-<div class="panel-title box-title">
-    <span><b><?= $data['title']?></b></span>
-</div>
+<!--<div class="panel-title box-title">
+    <span><b><?/*= $data['title']*/?></b></span>
+</div>-->
 <div class="panel-body padding-left-0">
     <div class="tag-cloud">
         <?php foreach ($data['body'] as $v):?>

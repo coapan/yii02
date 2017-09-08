@@ -68,24 +68,24 @@ class Post extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'label_img' => 'Label Img',
-            'summary' => 'Summary',
-            'content' => 'Content',
-            'cate_id' => 'Cate ID',
-            'user_id' => 'User ID',
-            'user_name' => 'User Name',
-            'is_valid' => 'Is Valid',
-            'browser' => 'Browser',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
-            'zan' => 'Zan',
-            'cai' => 'Cai',
-            'ip_address' => 'Ip Address',
-            'keywords' => 'Keywords',
-            'last_comment' => 'Last Comment',
-            'signature' => 'Signature',
-            'nickname' => 'Nickname',
+            'title' => '标题',
+            'label_img' => '标签图',
+            'summary' => '摘要',
+            'content' => '内容',
+            'cate_id' => '分类',
+            'user_id' => '用户ID',
+            'user_name' => '用户名',
+            'is_valid' => '文章状态',
+            'browser' => '浏览',
+            'created_at' => '创建时间',
+            'updated_at' => '修改时间',
+            'zan' => '赞',
+            'cai' => '踩',
+            'ip_address' => 'IP地址',
+            'keywords' => '关键词',
+            'last_comment' => '最后评论时间',
+            'signature' => '签名',
+            'nickname' => '昵称',
         ];
     }
 
@@ -151,5 +151,10 @@ class Post extends \yii\db\ActiveRecord
             ->all();
 
         return $data;
+    }
+
+    public static function getCommentCount($pid)
+    {
+        return Comment::find()->where(['post_id' => $pid])->count();
     }
 }

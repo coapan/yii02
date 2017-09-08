@@ -8,11 +8,11 @@ use yii\helpers\Html;
 /* @var $cate[] common\models\Category */
 
 $this->title = '文章创建';
-$this->params['breadcrumbs'][] = ['label' => '文章', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '文章', 'url' => ['index1']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="row">
+<div class="content-wrap">
     <div class="col-lg-9">
         <div class="panel-title">
             <span>创建文章</span>

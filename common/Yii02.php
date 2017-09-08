@@ -12,9 +12,13 @@ use common\models\Blacklist;
 use common\models\Category;
 use common\models\Comment;
 use common\models\Post;
+use common\models\Tag;
 use common\models\User;
 use common\models\UserPost;
 
+/**
+ * 自定义类，可以直接调用，不用每次都去第一遍
+ */
 class Yii02
 {
     /**
@@ -48,6 +52,11 @@ class Yii02
             ->where(['post_id' => $id])
             ->count();
         return $num;
+    }
+
+    public static function getCateName($id)
+    {
+        return Category::findOne(['id' => $id]);
     }
 
     /**
@@ -225,6 +234,43 @@ CODE;
     }
 
     /**
+     * 获取字符串的长度
+     * @param $string
+     * @param $sublen
+     * @param int $start
+     * @param string $code
+     * @return string
+     */
+    public static function cutStr($string, $sublen, $start = 0, $code = 'utf-8')
+    {
+        $string = strip_tags(htmlspecialchars_decode($string));
+        if ($code == 'utf-8') {
+            $pa = "/[\x01-\x7f]|[\xc2-\xdf][\x80-\xbf]|\xe0[\xa0-\xbf][\x80-\xbf]|[\xe1-\xef][\x80-\xbf][\x80-\xbf]|\xf0[\x90-\xbf][\x80-\xbf][\x80-\xbf]|[\xf1-\xf7][\x80-\xbf][\x80-\xbf][\x80-\xbf]/";
+            preg_match_all($pa, $string, $t_string);
+            if (count($t_string[0]) - $start > $sublen) return join('', array_slice($t_string[0], $start, $sublen)) . "...";
+            return join('', array_slice($t_string[0], $start, $sublen));
+        } else {
+            $start = $start * 2;
+            $sublen = $sublen * 2;
+            $strlen = strlen($string);
+            $tmpstr = '';
+            for ($i = 0; $i < $strlen; $i++) {
+                if ($i >= $start && $i < ($start + $sublen)) {
+                    if (ord(substr($string, $i, 1)) > 129) {
+                        $tmpstr .= substr($string, $i, 2);
+                    } else {
+                        $tmpstr .= substr($string, $i, 1);
+                    }
+                }
+                if (ord(substr($string, $i, 1)) > 129) $i++;
+            }
+            //超出多余的字段就显示...
+            if (strlen($tmpstr) < $strlen) $tmpstr .= "...";
+            return $tmpstr;
+        }
+    }
+
+    /**
      * 获取登录用户某个字段的信息
      * @param $field
      * @return mixed
@@ -328,5 +374,45 @@ CODE;
         } else {
             return false;
         }
+    }
+
+    /**
+     * 获取近期文章
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public static function getNewPostList()
+    {
+        return Post::find()
+            ->select(['id', 'title', 'created_at'])
+            ->orderBy(['created_at' => SORT_DESC])
+            ->indexBy('title')
+            ->limit(5)
+            ->all();
+    }
+
+    /**
+     * 获取热闹标签
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public static function getHotTag()
+    {
+        return Tag::find()
+            ->orderBy(['post_num' => SORT_DESC])
+            ->limit(20)
+            ->all();
+    }
+
+    /**
+     * 获取热门文章
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public static function getHotPost()
+    {
+        return Post::find()
+            ->select(['id', 'title', 'browser'])
+            ->orderBy(['browser' => SORT_DESC])
+            ->indexBy('title')
+            ->limit(5)
+            ->all();
     }
 }

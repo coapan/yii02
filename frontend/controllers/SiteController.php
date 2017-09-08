@@ -29,7 +29,7 @@ class SiteController extends Controller
                 'only' => ['logout', 'signup'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['signup','login'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -44,6 +44,20 @@ class SiteController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
+                ],
+            ],
+
+            'pageCache' => [
+                'class' => 'yii\filters\PageCache',
+                'only' => ['index'],
+                'duration' => 600,
+                'variations' => [
+                    Yii::$app->request->get('page'),
+                    Yii::$app->request->get('per-page'),
+                ],
+                'dependency' => [
+                    'class' => 'yii\caching\DbDependency',
+                    'sql' => 'select count(id) from post',
                 ],
             ],
         ];
@@ -74,6 +88,10 @@ class SiteController extends Controller
     {
         return $this->render('index');
     }
+    public function actionTest()
+    {
+        return $this->render('test');
+    }
 
     /**
      * Logs in a user.
@@ -87,6 +105,7 @@ class SiteController extends Controller
         }
 
         $model = new LoginForm();
+        
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         } else {
@@ -104,6 +123,8 @@ class SiteController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
+
+        Yii::$app->cache->flush();
 
         return $this->goHome();
     }
